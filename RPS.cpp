@@ -1,8 +1,9 @@
 /*
-Program: Rock, Paper, Scissors
+Program: Rock, Paper, Scissors - Part 2
 Programmer: Montavius Spratley Burford
-Date: 4/27/2025
-Requirments: Write a program that lets the user play a game of Rock, Paper, Scissors against the computer.
+Date: 4/29/2025
+Requirments: Revise your original Rock, Paper, Scissors game so that it is repeatable. Using a sentinel value, (doAgain) to
+end. On each iteration, the game should accept the name of the player, keep count of how many times they have won.
 */
 
 #include <iostream>
@@ -60,30 +61,46 @@ std::string determineWinner(std::string user, std::string computer) {
 int main() {
     std::srand(static_cast<unsigned int>(std::time(0)));
 
-    std::string userChoice;
-    std::string computerChoice;
-    std::string winner;
+    std::string playerName;
+    std::cout << "Enter your name: ";
+    std::cin >> playerName;
 
-    do {
-        computerChoice = getComputerChoice();
-        userChoice = getUserChoice();
+    int winCount = 0;
+    std::string playAgain = "yes";
 
-        displayChoices(userChoice, computerChoice);
+    while (playAgain == "yes") {
+        std::string userChoice;
+        std::string computerChoice;
+        std::string winner;
 
-        winner = determineWinner(userChoice, computerChoice);
+        do {
+            computerChoice = getComputerChoice();
+            userChoice = getUserChoice();
 
-        if (winner == "tie") {
-            std::cout << "It's a tie! Let's play again.\n\n";
+            displayChoices(userChoice, computerChoice);
+
+            winner = determineWinner(userChoice, computerChoice);
+
+            if (winner == "tie") {
+                std::cout << "It's a tie! Let's play again.\n\n";
+            }
+
+        } while (winner == "tie");
+
+        if (winner == "user") {
+            std::cout << playerName << ", you win this round!\n";
+            winCount++;
+        }
+        else {
+            std::cout << "Computer wins this round!\n";
         }
 
-    } while (winner == "tie");
+        std::cout << "Do you want to play again? (yes/no): ";
+        std::cin >> playAgain;
+    }
 
-    if (winner == "user") {
-        std::cout << "You win!\n";
-    }
-    else {
-        std::cout << "Computer wins!\n";
-    }
+    std::cout << playerName << ", you won " << winCount << " time(s)!\n";
+    std::cout << "Thanks for playing!\n";
 
     return 0;
 }
